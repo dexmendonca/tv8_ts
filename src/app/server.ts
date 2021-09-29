@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import dayjs from 'dayjs';
 import dotenvSafe from 'dotenv-safe';
 import knex from 'knex';
 import chokidar from 'chokidar';
@@ -16,6 +17,7 @@ import ffyFormBody from 'fastify-formbody';
 import ffyUrlData from 'fastify-url-data';
 
 import promisePlugin from './plugins/promisePlugin';
+import datePlugin from './plugins/datePlugin';
 import eventBusPlugin from './plugins/EventBusPlugin';
 import eventBusDBPlugin from './plugins/EventBusDBPlugin';
 import cronPlugin from './plugins/cronPlugin';
@@ -75,10 +77,18 @@ if (script.parseBool(process.env.USE_LOGGER)) {
 		ignored: /(^|[/\\])\../, // ignore dotfiles
 		persistent: true
 	});
-	watcher.on('unlinkDir', path => {
+	watcher.on('unlinkDir', async (path) => {
 		if (path === '/tmp/tv8') {
 			if (!fs.existsSync(loggerDir)) {
-				fs.mkdirSync(loggerDir);
+				const date = dayjs().format('YYYY-MM-DD');
+				await fs.promises.mkdir(loggerDir);
+
+				await fs.promises.writeFile(`${loggerDir}/info-${date}.log`, '');
+				await fs.promises.writeFile(`${loggerDir}/info-${date}.log`, '');
+				await fs.promises.writeFile(`${loggerDir}/debug-${date}.log`, '');
+				await fs.promises.writeFile(`${loggerDir}/warn-${date}.log`, '');
+				await fs.promises.writeFile(`${loggerDir}/error-${date}.log`, '');
+				await fs.promises.writeFile(`${loggerDir}/fatal-${date}.log`, '');
 			}
 		}
 	}).on('error', () => null);
@@ -99,6 +109,7 @@ server.register(ffyFormBody);
 server.register(require('fastify-axios'));
 server.register(ffyUrlData);
 server.register(promisePlugin);
+server.register(datePlugin);
 
 // Plugins Customizados
 if (script.parseBool(process.env.USE_EVENT)) {
