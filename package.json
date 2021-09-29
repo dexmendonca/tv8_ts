@@ -1,0 +1,72 @@
+{
+  "name": "tv8_ts",
+  "version": "0.0.1",
+  "main": "dist/app/server.js",
+  "author": "André Mendonça e Silva <dexmendoncadev@gmail.com>",
+  "license": "WTFPL",
+  "scripts": {
+    "build": "rm dist -Rf && tsc  -b  && cp ./package.json ./dist/package.json && cp ./.env ./dist/.env && cp ./.env.example ./dist/.env.example ",
+    "dev": "nodemon  --watch src --exec 'ts-node src/app/server.ts' -e ts,js,njk,html,css,json",
+    "build:fast": "rm dist -Rf && sucrase ./src -d ./dist --transforms typescript,imports && cp ./package.json ./dist/package.json ",
+    "dev:fast": "nodemon  --watch src --exec 'sucrase-node  src/app/server.ts' -e ts,js,njk,html,css,json ",
+    "rebuild-locks": "rm node_modules -Rf && rm yarn.lock && rm package-lock.json && npm i && rm node_modules -Rf && yarn install",
+    "rebuild-env": "rm .env -Rf && cp .env.example .env",
+    "clean": "rm dist -Rf ",
+    "finish": "yarn rebuild-env && yarn rebuild-locks"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dexmendonca/tv8_ts.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dexmendonca/tv8_ts/issues"
+  },
+  "homepage": "https://github.com/dexmendonca/tv8_ts#readme",
+  "dependencies": {
+    "chokidar": "^3.5.2",
+    "dayjs": "^1.10.6",
+    "dotenv-safe": "^8.2.0",
+    "fastify": "^3.20.2",
+    "fastify-axios": "^1.2.3",
+    "fastify-cors": "^6.0.2",
+    "fastify-favicon": "^3.1.0",
+    "fastify-formbody": "^5.1.0",
+    "fastify-helmet": "^5.3.2",
+    "fastify-knex": "^0.1.1",
+    "fastify-plugin": "^3.0.0",
+    "fastify-url-data": "^3.0.3",
+    "file-stream-rotator": "^0.5.7",
+    "jimp": "^0.16.1",
+    "jsonwebtoken": "^8.5.1",
+    "knex": "^0.95.10",
+    "node-cron": "^3.0.0",
+    "pg": "^8.7.1",
+    "pino": "^6.13.3",
+    "pino-multi-stream": "^5.3.0",
+    "pino-pretty": "^7.0.1"
+  },
+  "devDependencies": {
+    "@types/dotenv-safe": "^8.1.2",
+    "@types/jsonwebtoken": "^8.5.5",
+    "@types/node": "^16.7.10",
+    "@types/node-cron": "^2.0.4",
+    "@types/pg": "^8.6.1",
+    "@types/pino": "^6.3.11",
+    "@types/pino-multi-stream": "^5.1.2",
+    "@typescript-eslint/eslint-plugin": "^4.30.0",
+    "@typescript-eslint/parser": "^4.30.0",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-promise": "^5.1.0",
+    "eslint-plugin-standard": "^5.0.0",
+    "nodemon": "^2.0.12",
+    "pm2": "^5.1.1",
+    "sucrase": "^3.20.1",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.4.2"
+  }
+}
