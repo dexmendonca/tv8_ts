@@ -4,7 +4,6 @@ dotenvSafe.config();
 
 const tasksFN:any = (ft:any) => {
 	const db = ft.knex;
-	const promise = ft.promise;
 
 	const taskList = [];
 
@@ -12,7 +11,7 @@ const tasksFN:any = (ft:any) => {
 		{
 			period: '0,30 * * * *',
 			fn: async () => {
-				const trx = await promise.promisify(db.transaction);
+				const trx = await db.transaction();
 				try {
 					await trx.raw('SELECT NOW()');
 					await trx.commit();

@@ -4,11 +4,10 @@ dotenvSafe.config();
 
 const eventFN:any = (ft:any) => {
 	const db = ft.knex;
-	const promise = ft.promise;
 
 	const eventTest = async (payload:any) => {
 		try {
-			const trx = await promise.promisify(db.transaction);
+			const trx = await db.transaction();
 			try {
 				await trx.raw(`SELECT * from eventBus.emit('aftereventTest','${JSON.stringify(payload)}')`);
 				await trx.commit();
