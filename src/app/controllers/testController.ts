@@ -4,7 +4,6 @@ const exportFN = (ft:any) => {
 	const testService = testServiceBase(ft);
 	const EventBus = ft.EventBus;
 	const db = ft.knex;
-	const promise = ft.promise;
 
 	const testGet = async (req:genericObject, res:genericObject) => {
 		const now = await testService.showNow();
@@ -13,7 +12,7 @@ const exportFN = (ft:any) => {
 
 	const testPost = async (req:genericObject, res:genericObject) => {
 		try {
-			const trx = await promise.promisify(db.transaction);
+			const trx = await db.transaction();
 			try {
 				const result = await trx.raw('SELECT NOW()');
 				console.log(result.rows);
@@ -35,7 +34,7 @@ const exportFN = (ft:any) => {
 
 	const testEventDB = async (req:genericObject, res:genericObject) => {
 		try {
-			const trx = await promise.promisify(db.transaction);
+			const trx = await db.transaction();
 			try {
 				await trx.raw(`SELECT * from eventBus.emit('eventTest','{}')`);
 				await trx.commit();

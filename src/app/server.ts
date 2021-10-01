@@ -100,7 +100,7 @@ if (script.parseBool(process.env.USE_LOGGER)) {
 const server = fastify(objConfig);
 const dbConfig = databaseConfig[NODE_ENV];
 
-server.register(require('fastify-knex'), dbConfig);
+server.register(require('fastify-knexjs'), dbConfig);
 server.register(require('fastify-favicon'), { path: path.resolve(__dirname, './public'), name: 'favicon.ico' });
 
 server.register(helmet);

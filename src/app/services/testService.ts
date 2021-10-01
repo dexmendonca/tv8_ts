@@ -1,9 +1,8 @@
 const exportFN = (ft:any) => {
 	const db = ft.knex;
-	const promise = ft.promise;
 
 	const showNow = async () => {
-		const trx = await promise.promisify(db.transaction);
+		const trx = await db.transaction();
 		try {
 			const result = await trx.raw('SELECT NOW()');
 			await trx.commit();
