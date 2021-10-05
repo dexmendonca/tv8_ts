@@ -9,14 +9,15 @@ import helmet from 'fastify-helmet';
 import cors from 'fastify-cors';
 
 import { genericObject } from './types/genericObjectType';
-import script from './script/script';
-import databaseConfig from './config/database';
+import script from './scripts/script';
+import databaseConfig from './configs/database';
 
 // configuração do DB
 import ffyFormBody from 'fastify-formbody';
 import ffyUrlData from 'fastify-url-data';
 
 import promisePlugin from './plugins/promisePlugin';
+import jwtPlugin from './plugins/jwtPlugin';
 import datePlugin from './plugins/datePlugin';
 import eventBusPlugin from './plugins/EventBusPlugin';
 import eventBusDBPlugin from './plugins/EventBusDBPlugin';
@@ -93,7 +94,7 @@ if (script.parseBool(process.env.USE_LOGGER)) {
 		}
 	}).on('error', () => null);
 
-	const logger = require('./logger/logger').logger;
+	const logger = require('./loggers/logger').logger;
 	objConfig.logger = logger;
 }
 
@@ -101,14 +102,16 @@ const server = fastify(objConfig);
 const dbConfig = databaseConfig[NODE_ENV];
 
 server.register(require('fastify-knexjs'), dbConfig);
-server.register(require('fastify-favicon'), { path: path.resolve(__dirname, './public'), name: 'favicon.ico' });
+server.register(require('fastify-favicon'), { path: path.resolve(__dirname, './publics'), name: 'favicon.ico' });
+server.register(promisePlugin);
+server.register(jwtPlugin);
 
 server.register(helmet);
 server.register(cors);
 server.register(ffyFormBody);
 server.register(require('fastify-axios'));
 server.register(ffyUrlData);
-server.register(promisePlugin);
+
 server.register(datePlugin);
 
 // Plugins Customizados

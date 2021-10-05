@@ -10,6 +10,11 @@ const Route = (fastify:FastifyInstance, opts:FastifyPluginOptions, next:any) => 
 
 	fastify.get<any>('/event', testController.testEvent);
 	fastify.get<any>('/eventDB', testController.testEventDB);
+
+	fastify.get<any>('/jwt', testController.testjwt);
+	fastify.get<any>('/crypto', testController.testCrypto);
+	fastify.get<any>('/rsa', testController.testRSA);
+
 	fastify.get<any>('/error', testController.testError);
 
 	fastify.get<any>('/ip', (req, res) => {

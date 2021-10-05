@@ -23,10 +23,13 @@
   },
   "homepage": "https://github.com/dexmendonca/tv8_ts#readme",
   "dependencies": {
+    "argon2": "^0.28.2",
+    "bcryptjs": "^2.4.3",
     "chokidar": "^3.5.2",
     "date-fns": "^2.24.0",
     "dayjs": "^1.10.7",
     "dotenv-safe": "^8.2.0",
+    "fast-jwt": "^1.2.0",
     "fastify": "^3.20.2",
     "fastify-axios": "^1.2.3",
     "fastify-cors": "^6.0.2",
@@ -47,6 +50,7 @@
     "pino-pretty": "^7.0.1"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
     "@types/dotenv-safe": "^8.1.2",
     "@types/jsonwebtoken": "^8.5.5",
     "@types/node": "^16.7.10",

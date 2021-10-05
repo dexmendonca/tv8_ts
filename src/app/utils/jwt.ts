@@ -1,32 +1,55 @@
 import dotenvSafe from 'dotenv-safe';
-import jwt from 'jsonwebtoken';
+import { createSigner, createVerifier } from 'fast-jwt';
+
+import script from '../scripts/script';
 
 dotenvSafe.config();
 
-const secret = process.env.HASH_SECURITY;
-const duration = process.env.JWT_DURATION;
+const key = process.env.HASH_SECURITY;
+const expDuration = script.parseJWTTime(process.env.JWT_DURATION);
 
-const sign = async (data: unknown) => {
-	return (
-		await jwt.sign({ data: data }, secret, { expiresIn: duration })
-	);
-};
+const signSync = createSigner({ key: key, expiresIn: expDuration, algorithm: 'HS512' });
+const sign = createSigner({ key: async () => key, expiresIn: expDuration, algorithm: 'HS512' });
 
-const verify = async (token: string) => {
+const verifySyncVerifier = createVerifier({ key: key });
+const verifyVerifier = createVerifier({ key: async () => key });
+
+const verify = async (token:string, showPayload = false) => {
 	try {
-		const decoded = await jwt.verify(token, secret);
-		if (decoded) {
+		const payload = await verifyVerifier(token);
+		if (showPayload) {
+			return { valid: true, payload };
+		} else {
 			return true;
+		}
+	} catch (error) {
+		if (showPayload) {
+			return { valid: false };
 		} else {
 			return false;
 		}
-	} catch (err) {
-		// err
-		return false;
 	}
 };
 
+const verifySync = (token:string, showPayload = false) => {
+	try {
+		const payload = verifySyncVerifier(token);
+		if (showPayload) {
+			return { valid: true, payload };
+		} else {
+			return true;
+		}
+	} catch (error) {
+		if (showPayload) {
+			return { valid: false };
+		} else {
+			return false;
+		}
+	}
+};
 export default {
+	signSync,
 	sign,
+	verifySync,
 	verify
 };

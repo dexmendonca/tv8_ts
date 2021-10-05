@@ -48,6 +48,21 @@ const exportFN = (ft:any) => {
 		}
 	};
 
+	const testjwt = async (req:genericObject, res:genericObject) => {
+		const result = await testService.testJWT();
+		res.code(200).send(result);
+	};
+
+	const testCrypto = async (req:genericObject, res:genericObject) => {
+		const result = await testService.testCrypto();
+		res.code(200).send(result);
+	};
+
+	const testRSA = async (req:genericObject, res:genericObject) => {
+		const result = await testService.testRSA();
+		res.code(200).send(result);
+	};
+
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const testError = async (req:genericObject, res:genericObject) => {
 		throw new Error('kaboom');
@@ -58,6 +73,9 @@ const exportFN = (ft:any) => {
 		testPost,
 		testEvent,
 		testEventDB,
+		testjwt,
+		testCrypto,
+		testRSA,
 		testError
 	};
 };
